@@ -18,10 +18,10 @@ public class RefreshJwtUtil {
     @Value("${ACCESS_TOKEN_EXPIRATION_Time}")
     private int EXPIRATION_TIME;
 
-    public String generateToken(String email, Roles role) {
+    public String generateToken(String userName, Roles role) {
         String token;
         token = Jwts.builder()
-                .setSubject(email)
+                .setSubject(userName)
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -30,7 +30,7 @@ public class RefreshJwtUtil {
         return token;
     }
 
-    public String extractEmail(String token) {
+    public String extractUserName(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }
 

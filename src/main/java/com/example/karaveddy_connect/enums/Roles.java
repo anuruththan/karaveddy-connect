@@ -6,7 +6,7 @@ import java.util.EnumSet;
 public enum Roles{
             SUPPER_ADMIN,
             ADMIN,
-            COMMON_USER,
+            SUPPER_USER,
             PUBLIC;
 
 
