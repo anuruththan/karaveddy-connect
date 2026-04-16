@@ -25,7 +25,7 @@ public class UserAuthController {
     @Value("${ACCESS_TOKEN_EXPIRATION_Time}")
     private int accessTokenExpiryTime;
 
-    @Value("${REFRESH_TOKEN_EXPIRATION_Time}")
+    @Value("${REFRESH_TOKEN_EXPIATION_TIME}")
     private int cookieExpiryTime;
 
     GeneralResponse generalResponse;
@@ -80,38 +80,43 @@ public class UserAuthController {
         return List.of(accessCookie.toString(), refreshCookie.toString(), userEmailCookie.toString(), userRoleCookie.toString());
     }
 
+    private void addClearCookie(HttpHeaders headers, String name) {
+        ResponseCookie cookie = ResponseCookie.from(name, "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+
+        headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse> login(@RequestBody UserAuthLoginReq userAuthLoginReq) {
         GeneralAuthResponse generalAuthResponse = userAuthService.getUserAuthByEmail(userAuthLoginReq);
         generalResponse = new GeneralResponse(generalAuthResponse.getData(), generalAuthResponse.getMsg(), generalAuthResponse.getStatus(), generalAuthResponse.isRes());
         List<String> cookies= generateCookie(generalAuthResponse.getAccessToken(), generalAuthResponse.getRefreshToken(), generalAuthResponse.getUsername(), generalAuthResponse.getRole());
-        String accessCookie = cookies.get(0);
-        String refreshCookie = cookies.get(1);
-        String userEmailCookie = cookies.get(2);
-        String userRoleCookie = cookies.get(3);
 
         return ResponseEntity.status(generalAuthResponse.getStatus())
-                .header(HttpHeaders.SET_COOKIE, accessCookie)
-                .header(HttpHeaders.SET_COOKIE, refreshCookie)
-                .header(HttpHeaders.SET_COOKIE, userEmailCookie)
-                .header(HttpHeaders.SET_COOKIE, userRoleCookie)
+                .header(HttpHeaders.SET_COOKIE, cookies.get(0))
+                .header(HttpHeaders.SET_COOKIE, cookies.get(1))
+                .header(HttpHeaders.SET_COOKIE, cookies.get(2))
+                .header(HttpHeaders.SET_COOKIE, cookies.get(3))
                 .body(generalResponse);
 
     }
 
     @GetMapping("/logout")
     public ResponseEntity<GeneralResponse> logout(){
-        List<String> cookies= generateCookie(null, null, null, null);
-        String accessCookie = cookies.get(0);
-        String refreshCookie = cookies.get(1);
-        String userEmailCookie = cookies.get(2);
-        String userRoleCookie = cookies.get(3);
-
+        HttpHeaders headers = new HttpHeaders();
+        addClearCookie(headers, "ACCESS_TOKEN");
+        addClearCookie(headers, "REFRESH_TOKEN");
+        addClearCookie(headers, "USER_NAME");
+        addClearCookie(headers, "USER_ROLE");
+        generalResponse = new GeneralResponse(null, "Logout success", 200, true);
         return ResponseEntity.status(200)
-                .header(HttpHeaders.SET_COOKIE, accessCookie)
-                .header(HttpHeaders.SET_COOKIE, refreshCookie)
-                .header(HttpHeaders.SET_COOKIE, userEmailCookie)
-                .header(HttpHeaders.SET_COOKIE, userRoleCookie)
+                .headers(headers)
                 .body(generalResponse);
     }
 

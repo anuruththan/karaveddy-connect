@@ -58,15 +58,15 @@ public class JwtAuthenticationFilterUtil extends OncePerRequestFilter  {
         try {
             String jwt = extractTokenFromCookie(request);
             if (jwt != null) {
-                String email = accessJwtUtil.extractEmail(jwt);
+                String username = accessJwtUtil.extractUserName(jwt);
                 String role = accessJwtUtil.extractRole(jwt);
-                log.info("JWT token extracted successfully. Email: {}, Role: {}", email, role);
-                if (email != null && role != null &&
+                log.info("JWT token extracted successfully. UserName: {}, Role: {}", username, role);
+                if (username != null && role != null &&
                         SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
-                                    email,
+                                    username,
                                     null,
                                     Collections.singletonList(
                                             new SimpleGrantedAuthority("ROLE_" + role)
