@@ -5,6 +5,7 @@ import com.example.karaveddy_connect.dto.response.GeneralAuthResponse;
 import com.example.karaveddy_connect.dto.response.GeneralResponse;
 import com.example.karaveddy_connect.enums.Roles;
 import com.example.karaveddy_connect.service.UserAuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,9 @@ public class UserAuthController {
     @Value("${REFRESH_TOKEN_EXPIATION_TIME}")
     private int cookieExpiryTime;
 
-    GeneralResponse generalResponse;
+    private GeneralAuthResponse generalAuthResponse;
+
+    private GeneralResponse generalResponse;
 
 
     private List<String> generateCookie(String accessToken, String refreshToken, String userName, Roles role){
@@ -94,7 +97,7 @@ public class UserAuthController {
 
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse> login(@RequestBody UserAuthLoginReq userAuthLoginReq) {
-        GeneralAuthResponse generalAuthResponse = userAuthService.getUserAuthByEmail(userAuthLoginReq);
+        generalAuthResponse = userAuthService.getUserAuthByEmail(userAuthLoginReq);
         generalResponse = new GeneralResponse(generalAuthResponse.getData(), generalAuthResponse.getMsg(), generalAuthResponse.getStatus(), generalAuthResponse.isRes());
         List<String> cookies= generateCookie(generalAuthResponse.getAccessToken(), generalAuthResponse.getRefreshToken(), generalAuthResponse.getUsername(), generalAuthResponse.getRole());
 
@@ -105,6 +108,13 @@ public class UserAuthController {
                 .header(HttpHeaders.SET_COOKIE, cookies.get(3))
                 .body(generalResponse);
 
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<GeneralResponse> refreshToken(HttpServletRequest request){
+        generalAuthResponse = userAuthService.getRefreshAuth(request);
+        generalResponse = new GeneralResponse(generalAuthResponse.getData(), generalAuthResponse.getMsg(), generalAuthResponse.getStatus(), generalAuthResponse.isRes());
+        return ResponseEntity.status(generalAuthResponse.getStatus()).body(generalResponse);
     }
 
     @GetMapping("/logout")

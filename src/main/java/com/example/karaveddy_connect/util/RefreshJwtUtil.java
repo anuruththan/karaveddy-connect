@@ -1,6 +1,7 @@
 package com.example.karaveddy_connect.util;
 
 import com.example.karaveddy_connect.enums.Roles;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -37,4 +38,17 @@ public class RefreshJwtUtil {
     public String extractRole(String token) {
         return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("role");
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.error("Token has expired: {}", e.getMessage());
+        } catch (Exception e) {
+            log.error("Invalid token: {}", e.getMessage());
+        }
+        return false;
+    }
+
 }
