@@ -1,6 +1,6 @@
-package com.example.KaraveddyConnect.aspects.components;
+package com.KaraveddyConnect.aspects.components;
 
-import com.example.KaraveddyConnect.aspects.interfaces.LogException;
+import com.KaraveddyConnect.aspects.interfaces.LogException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

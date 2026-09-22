@@ -1,6 +1,6 @@
-package com.example.KaraveddyConnect.utils;
+package com.KaraveddyConnect.utils;
 
-import com.example.KaraveddyConnect.aspects.interfaces.LogException;
+import com.KaraveddyConnect.aspects.interfaces.LogException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
