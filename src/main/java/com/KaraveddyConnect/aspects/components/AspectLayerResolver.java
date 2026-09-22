@@ -1,4 +1,4 @@
-package com.example.KaraveddyConnect.aspects.components;
+package com.KaraveddyConnect.aspects.components;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;

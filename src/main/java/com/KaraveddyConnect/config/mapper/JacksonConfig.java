@@ -1,4 +1,4 @@
-package com.example.KaraveddyConnect.config.mapper;
+package com.KaraveddyConnect.config.mapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;

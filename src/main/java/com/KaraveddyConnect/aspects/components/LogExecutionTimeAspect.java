@@ -1,6 +1,6 @@
-package com.example.KaraveddyConnect.aspects.components;
+package com.KaraveddyConnect.aspects.components;
 
-import com.example.KaraveddyConnect.aspects.interfaces.LogExecutionTime;
+import com.KaraveddyConnect.aspects.interfaces.LogExecutionTime;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

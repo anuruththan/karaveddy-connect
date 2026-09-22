@@ -1,4 +1,4 @@
-package com.example.KaraveddyConnect.dto.response;
+package com.KaraveddyConnect.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

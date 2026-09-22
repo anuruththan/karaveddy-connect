@@ -1,4 +1,4 @@
-package com.example.KaraveddyConnect.aspects.interfaces;
+package com.KaraveddyConnect.aspects.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
