@@ -37,8 +37,8 @@ public class SecurityConfig {
                                 "/live-steam/**"
                         ).permitAll()
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/supper-admin/**").hasAnyAuthority("1")
-                        .requestMatchers("/admin/**").hasAnyAuthority("2")
+                        .requestMatchers("/supper-admin/**").hasAnyRole("ROLE_" + 1)
+                        .requestMatchers("/admin/**").hasAnyAuthority("ROLE_" + 2)
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

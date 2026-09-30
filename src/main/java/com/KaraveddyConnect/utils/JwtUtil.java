@@ -31,7 +31,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email, Integer role) {
+    public String generateToken(String email, int role) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
@@ -53,7 +53,7 @@ public class JwtUtil {
         return extractAllClaims(token).getSubject();
     }
 
-    public Integer extractRole(String token) {
+    public int extractRole(String token) {
         return extractAllClaims(token).get("role", Integer.class);
     }
 
