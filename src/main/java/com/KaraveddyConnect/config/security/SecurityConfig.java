@@ -32,9 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/chat/**",
-                                "/live-steam/**"
+                                "/swagger-ui.html"
                         ).permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/supper-admin/**").hasAnyRole("ROLE_" + 1)
